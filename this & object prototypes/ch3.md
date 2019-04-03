@@ -38,7 +38,7 @@ Objects are the general building block upon which much of JS is built. They are 
 * `undefined`
 * `object`
 
-Note that the *simple primitives* (`string`, `boolean`, `number`, `null`, and `undefined`) are **not** themselves `objects`. `null` is sometimes referred to as an object type, but this misconception stems from a bug in the language which causes `typeof null` to return the string `"object"` incorrectly (and confusingly). In fact, `null` is its own primitive type.
+Note that the *simple primitives* (`string`, `number`, `boolean`, `null`, and `undefined`) are **not** themselves `objects`. `null` is sometimes referred to as an object type, but this misconception stems from a bug in the language which causes `typeof null` to return the string `"object"` incorrectly (and confusingly). In fact, `null` is its own primitive type.
 
 **It's a common mis-statement that "everything in JavaScript is an object". This is clearly not true.**
 
@@ -68,15 +68,15 @@ But in JS, these are actually just built-in functions. Each of these built-in fu
 
 ```js
 var strPrimitive = "I am a string";
-typeof strPrimitive; // "string"
-strPrimitive instanceof String; // false
+typeof strPrimitive;							// "string"
+strPrimitive instanceof String;					// false
 
 var strObject = new String( "I am a string" );
-typeof strObject; // "object"
-strObject instanceof String; // true
+typeof strObject; 								// "object"
+strObject instanceof String;					// true
 
 // inspect the object sub-type
-Object.prototype.toString.call( strObject ); // [object String]
+Object.prototype.toString.call( strObject );	// [object String]
 ```
 
 We'll see in detail in a later chapter exactly how the `Object.prototype.toString...` bit works, but briefly, we can inspect the internal sub-type by borrowing the base default `toString()` method, and you can see it reveals that `strObject` is an object that was in fact created by the `String` constructor.
@@ -90,9 +90,9 @@ Consider:
 ```js
 var strPrimitive = "I am a string";
 
-console.log( strPrimitive.length ); // 13
+console.log( strPrimitive.length );			// 13
 
-console.log( strPrimitive.charAt( 3 ) ); // "m"
+console.log( strPrimitive.charAt( 3 ) );	// "m"
 ```
 
 In both cases, we call a property or method on a string primitive, and the engine automatically coerces it to a `String` object, so that the property/method access works.
@@ -118,9 +118,9 @@ var myObject = {
 	a: 2
 };
 
-myObject.a; // 2
+myObject.a;		// 2
 
-myObject["a"]; // 2
+myObject["a"];	// 2
 ```
 
 To access the value at the *location* `a` in `myObject`, we need to use either the `.` operator or the `[ ]` operator. The `.a` syntax is usually referred to as "property" access, whereas the `["a"]` syntax is usually referred to as "key" access. In reality, they both access the same *location*, and will pull out the same value, `2`, so the terms can be used interchangeably. We will use the most common term, "property access" from here on.
@@ -130,6 +130,7 @@ The main difference between the two syntaxes is that the `.` operator requires a
 Also, since the `[".."]` syntax uses a string's **value** to specify the location, this means the program can programmatically build up the value of the string, such as:
 
 ```js
+var wantA = true;
 var myObject = {
 	a: 2
 };
@@ -154,9 +155,9 @@ myObject[true] = "foo";
 myObject[3] = "bar";
 myObject[myObject] = "baz";
 
-myObject["true"]; // "foo"
-myObject["3"]; // "bar"
-myObject["[object Object]"]; // "baz"
+myObject["true"];				// "foo"
+myObject["3"];					// "bar"
+myObject["[object Object]"];	// "baz"
 ```
 
 ### Computed Property Names
@@ -204,17 +205,17 @@ function foo() {
 	console.log( "foo" );
 }
 
-var someFoo = foo; // variable reference to `foo`
+var someFoo = foo;	// variable reference to `foo`
 
 var myObject = {
 	someFoo: foo
 };
 
-foo; // function foo(){..}
+foo;				// function foo(){..}
 
-someFoo; // function foo(){..}
+someFoo;			// function foo(){..}
 
-myObject.someFoo; // function foo(){..}
+myObject.someFoo;	// function foo(){..}
 ```
 
 `someFoo` and `myObject.someFoo` are just two separate references to the same function, and neither implies anything about the function being special or "owned" by any other object. If `foo()` above was defined to have a `this` reference inside it, that `myObject.someFoo` *implicit binding* would be the **only** observable difference between the two references. Neither reference really makes sense to be called a "method".
@@ -229,32 +230,32 @@ Even when you declare a function expression as part of the object-literal, that 
 
 ```js
 var myObject = {
-	foo: function() {
+	foo: function foo() {
 		console.log( "foo" );
 	}
 };
 
 var someFoo = myObject.foo;
 
-someFoo; // function foo(){..}
+someFoo;		// function foo(){..}
 
-myObject.foo; // function foo(){..}
+myObject.foo;	// function foo(){..}
 ```
 
-**Note:** In Chapter 6, we will cover an ES6 short-hand for that `foo: function(){ .. }` declaration syntax in our object-literal.
+**Note:** In Chapter 6, we will cover an ES6 short-hand for that `foo: function foo(){ .. }` declaration syntax in our object-literal.
 
 ### Arrays
 
-Arrays also use the `[ ]` access form, but as mentioned above, they have slightly more structured organization for how and where values are stored (though still no restriction on what *type* of values are stored). Arrays assume *numeric indexing*, which means that values are stored in locations, usually called *indices*, at positive integers, such as `0` and `42`.
+Arrays also use the `[ ]` access form, but as mentioned above, they have slightly more structured organization for how and where values are stored (though still no restriction on what *type* of values are stored). Arrays assume *numeric indexing*, which means that values are stored in locations, usually called *indices*, at non-negative integers, such as `0` and `42`.
 
 ```js
 var myArray = [ "foo", 42, "bar" ];
 
-myArray.length; // 3
+myArray.length;		// 3
 
-myArray[0]; // "foo"
+myArray[0];			// "foo"
 
-myArray[2]; // "bar"
+myArray[2];			// "bar"
 ```
 
 Arrays *are* objects, so even though each index is a positive integer, you can *also* add properties onto the array:
@@ -264,14 +265,14 @@ var myArray = [ "foo", 42, "bar" ];
 
 myArray.baz = "baz";
 
-myArray.length; // 3
+myArray.length;	// 3
 
-myArray.baz; // "baz"
+myArray.baz;	// "baz"
 ```
 
 Notice that adding named properties (regardless of `.` or `[ ]` operator syntax) does not change the reported `length` of the array.
 
-You *could* use an array as a plain key/value object, and never add any numeric indices, but this is bad idea because arrays have behavior and optimizations specific to their intended use, and likewise with plain objects. Use objects to store key/value pairs, and arrays to store values at numeric indices.
+You *could* use an array as a plain key/value object, and never add any numeric indices, but this is a bad idea because arrays have behavior and optimizations specific to their intended use, and likewise with plain objects. Use objects to store key/value pairs, and arrays to store values at numeric indices.
 
 **Be careful:** If you try to add a property to an array, but the property name *looks* like a number, it will end up instead as a numeric index (thus modifying the array contents):
 
@@ -280,9 +281,9 @@ var myArray = [ "foo", 42, "bar" ];
 
 myArray["3"] = "baz";
 
-myArray.length; // 4
+myArray.length;	// 4
 
-myArray[3]; // "baz"
+myArray[3];		// "baz"
 ```
 
 ### Duplicating Objects
@@ -302,8 +303,8 @@ var anotherArray = [];
 
 var myObject = {
 	a: 2,
-	b: anotherObject, // reference, not a copy!
-	c: anotherArray, // another reference!
+	b: anotherObject,	// reference, not a copy!
+	c: anotherArray,	// another reference!
 	d: anotherFunction
 };
 
@@ -312,13 +313,13 @@ anotherArray.push( anotherObject, myObject );
 
 What exactly should be the representation of a *copy* of `myObject`?
 
-Firstly, we should answer if it should be a *shallow* or *deep* copy? A *shallow copy* would end up with `a` on the new object as a copy of the value `2`, but `b`, `c`, and `d` properties as just references to the same places as the references in the original object. A *deep copy* would duplicate not only `myObject`, but `anotherObject` and `anotherArray`. But then we have issues that `anotherArray` has references to `anotherObject` and `myObject` in it, so *those* should also be duplicated rather than reference-preserved. Now we have an infinite circular duplication problem because of the circular reference.
+Firstly, we should answer if it should be a *shallow* or *deep* copy. A *shallow copy* would end up with `a` on the new object as a copy of the value `2`, but `b`, `c`, and `d` properties as just references to the same places as the references in the original object. A *deep copy* would duplicate not only `myObject`, but `anotherObject` and `anotherArray`. But then we have issues that `anotherArray` has references to `anotherObject` and `myObject` in it, so *those* should also be duplicated rather than reference-preserved. Now we have an infinite circular duplication problem because of the circular reference.
 
 Should we detect a circular reference and just break the circular traversal (leaving the deep element not fully duplicated)? Should we error out completely? Something in between?
 
 Moreover, it's not really clear what "duplicating" a function would mean? There are some hacks like pulling out the `toString()` serialization of a function's source code (which varies across implementations and is not even reliable in all engines depending on the type of function being inspected).
 
-So how do we resolve all these tricky questions? Various JS frameworks have each picked their own interpretations and made their own decisions. But which of these (if any) should JS adopt as *the* standard. For a long time, there was no clear answer.
+So how do we resolve all these tricky questions? Various JS frameworks have each picked their own interpretations and made their own decisions. But which of these (if any) should JS adopt as *the* standard? For a long time, there was no clear answer.
 
 One subset solution is that objects which are JSON-safe (that is, can be serialized to a JSON string and then re-parsed to an object with the same structure and values) can easily be *duplicated* with:
 
@@ -333,10 +334,10 @@ At the same time, a shallow copy is fairly understandable and has far less issue
 ```js
 var newObj = Object.assign( {}, myObject );
 
-newObj.a; // 2
-newObj.b === anotherObject; // true
-newObj.c === anotherArray; // true
-newObj.d === anotherFunction; // true
+newObj.a;						// 2
+newObj.b === anotherObject;		// true
+newObj.c === anotherArray;		// true
+newObj.d === anotherFunction;	// true
 ```
 
 **Note:** In the next section, we describe "property descriptors" (property characteristics) and show the use of `Object.defineProperty(..)`. The duplication that occurs for `Object.assign(..)` however is purely `=` style assignment, so any special characteristics of a property (like `writable`) on a source object **are not preserved** on the target object.
@@ -424,7 +425,7 @@ myObject.a = 3; // TypeError
 
 The `TypeError` tells us we cannot change a non-writable property.
 
-**Note:** We will discuss getters/setters shortly, but briefly, you can observe that `writable:false` means a value cannot be changed, which is somewhat equivalent to if you defined a no-op setter. Actually, your no-op setter would need throw a `TypeError` when called, to be truly conformant to `writable:false`.
+**Note:** We will discuss getters/setters shortly, but briefly, you can observe that `writable:false` means a value cannot be changed, which is somewhat equivalent to if you defined a no-op setter. Actually, your no-op setter would need to throw a `TypeError` when called, to be truly conformant to `writable:false`.
 
 #### Configurable
 
@@ -436,18 +437,18 @@ var myObject = {
 };
 
 myObject.a = 3;
-myObject.a; // 3
+myObject.a;					// 3
 
 Object.defineProperty( myObject, "a", {
 	value: 4,
 	writable: true,
-	configurable: false, // not configurable!
+	configurable: false,	// not configurable!
 	enumerable: true
 } );
 
-myObject.a; // 4
+myObject.a;					// 4
 myObject.a = 5;
-myObject.a; // 5
+myObject.a;					// 5
 
 Object.defineProperty( myObject, "a", {
 	value: 6,
@@ -468,9 +469,9 @@ var myObject = {
 	a: 2
 };
 
-myObject.a; // 2
+myObject.a;				// 2
 delete myObject.a;
-myObject.a; // undefined
+myObject.a;				// undefined
 
 Object.defineProperty( myObject, "a", {
 	value: 2,
@@ -479,9 +480,9 @@ Object.defineProperty( myObject, "a", {
 	enumerable: true
 } );
 
-myObject.a; // 2
+myObject.a;				// 2
 delete myObject.a;
-myObject.a; // 2
+myObject.a;				// 2
 ```
 
 As you can see, the last `delete` call failed (silently) because we made the `a` property non-configurable.
@@ -549,7 +550,7 @@ In `non-strict mode`, the creation of `b` fails silently. In `strict mode`, it t
 
 `Object.seal(..)` creates a "sealed" object, which means it takes an existing object and essentially calls `Object.preventExtensions(..)` on it, but also marks all its existing properties as `configurable:false`.
 
-So, not only can you not add anymore properties, but you also cannot reconfigure or delete any existing properties (though you *can* still modify their values).
+So, not only can you not add any more properties, but you also cannot reconfigure or delete any existing properties (though you *can* still modify their values).
 
 #### Freeze
 
@@ -604,7 +605,7 @@ myObject.b; // undefined
 
 From a *value* perspective, there is no difference between these two references -- they both result in `undefined`. However, the `[[Get]]` operation underneath, though subtle at a glance, potentially performed a bit more "work" for the reference `myObject.b` than for the reference `myObject.a`.
 
-Inspecting only the value results, you cannot distinguish whether a property exists and holds the explicit value `undefined`, or whether ther property does *not* exist and `undefined` was the default return value after `[[Get]]` failed to return something explicitly. However, we will see shortly how you *can* distinguish these two scenarios.
+Inspecting only the value results, you cannot distinguish whether a property exists and holds the explicit value `undefined`, or whether the property does *not* exist and `undefined` was the default return value after `[[Get]]` failed to return something explicitly. However, we will see shortly how you *can* distinguish these two scenarios.
 
 ### `[[Put]]`
 
@@ -630,7 +631,7 @@ The default `[[Put]]` and `[[Get]]` operations for objects completely control ho
 
 ES5 introduced a way to override part of these default operations, not on an object level but a per-property level, through the use of getters and setters. Getters are properties which actually call a hidden function to retrieve a value. Setters are properties which actually call a hidden function to set a value.
 
-When you define a property to have either a getter or a setter or both, its definition becomes an "accessor descriptor" (as opposed to a "data descriptor"). For accessor-desciptors, the `value` and `writable` characteristics of the descriptor are moot and ignored, and instead JS considers the `set` and `get` characteristics of the property (as well as `configurable` and `enumerable`).
+When you define a property to have either a getter or a setter or both, its definition becomes an "accessor descriptor" (as opposed to a "data descriptor"). For accessor-descriptors, the `value` and `writable` characteristics of the descriptor are moot and ignored, and instead JS considers the `set` and `get` characteristics of the property (as well as `configurable` and `enumerable`).
 
 Consider:
 
@@ -696,7 +697,7 @@ myObject.a = 2;
 myObject.a; // 4
 ```
 
-**Note:** In this example, we actually store the specified value `2` of the assigment (`[[Put]]` operation) into another variable `_a_`. The `_a_` name is purely by convention for this example and implies nothing special about its behavior -- it's a normal property like any other.
+**Note:** In this example, we actually store the specified value `2` of the assignment (`[[Put]]` operation) into another variable `_a_`. The `_a_` name is purely by convention for this example and implies nothing special about its behavior -- it's a normal property like any other.
 
 ### Existence
 
@@ -709,14 +710,14 @@ var myObject = {
 	a: 2
 };
 
-("a" in myObject); // true
-("b" in myObject); // false
+("a" in myObject);				// true
+("b" in myObject);				// false
 
-myObject.hasOwnProperty( "a" ); // true
-myObject.hasOwnProperty( "b" ); // false
+myObject.hasOwnProperty( "a" );	// true
+myObject.hasOwnProperty( "b" );	// false
 ```
 
-The `in` operator will check to see if the property is *in* the object, or if it exists at any higher level of the `[[Prototype]]` chain object traversal (see Chapter 5). By contrast, `hasOwnProperty(..)` checks to see if *only* `myObject` has the property or not, and will *not* consult the `[[Prototype]]` chain. We'll come back to the important differences between these two operations in the Chapter 5 when we explore `[[Prototype]]`s in detail.
+The `in` operator will check to see if the property is *in* the object, or if it exists at any higher level of the `[[Prototype]]` chain object traversal (see Chapter 5). By contrast, `hasOwnProperty(..)` checks to see if *only* `myObject` has the property or not, and will *not* consult the `[[Prototype]]` chain. We'll come back to the important differences between these two operations in Chapter 5 when we explore `[[Prototype]]`s in detail.
 
 `hasOwnProperty(..)` is accessible for all normal objects via delegation to `Object.prototype` (see Chapter 5). But it's possible to create an object that does not link to `Object.prototype` (via `Object.create(null)` -- see Chapter 5). In this case, a method call like `myObject.hasOwnProperty(..)` would fail.
 
@@ -812,17 +813,17 @@ for (var i = 0; i < myArray.length; i++) {
 
 This isn't iterating over the values, though, but iterating over the indices, where you then use the index to reference the value, as `myArray[i]`.
 
-ES5 also added several iteration helpers for arrays, including `forEach(..)`, `every(..)`, and `some(..)`. Each of these helpers accepts a function callback to apply to each element in the array, differing only in they respectively respond to a return value from the callback.
+ES5 also added several iteration helpers for arrays, including `forEach(..)`, `every(..)`, and `some(..)`. Each of these helpers accepts a function callback to apply to each element in the array, differing only in how they respectively respond to a return value from the callback.
 
 `forEach(..)` will iterate over all values in the array, and ignores any callback return values. `every(..)` keeps going until the end *or* the callback returns a `false` (or "falsy") value, whereas `some(..)` keeps going until the end *or* the callback returns a `true` (or "truthy") value.
 
-These special return values inside `every(..)` and `some(..)` act somewhat like a `break` statment inside a normal `for` loop, in that they stop the iteration early before it reaches the end.
+These special return values inside `every(..)` and `some(..)` act somewhat like a `break` statement inside a normal `for` loop, in that they stop the iteration early before it reaches the end.
 
 If you iterate on an object with a `for..in` loop, you're also only getting at the values indirectly, because it's actually iterating only over the enumerable properties of the object, leaving you to access the properties manually to get the values.
 
 **Note:** As contrasted with iterating over an array's indices in a numerically ordered way (`for` loop or other iterators), the order of iteration over an object's properties is **not guaranteed** and may vary between different JS engines. **Do not rely** on any observed ordering for anything that requires consistency among environments, as any observed agreement is unreliable.
 
-But what if you want to iterate over the values directly instead of the array indicies (or object properties)? Helpfully, ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
+But what if you want to iterate over the values directly instead of the array indices (or object properties)? Helpfully, ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
 
 ```js
 var myArray = [ 1, 2, 3 ];
@@ -934,7 +935,7 @@ This iterator will generate random numbers "forever", so we're careful to only p
 
 Objects in JS have both a literal form (such as `var a = { .. }`) and a constructed form (such as `var a = new Array(..)`). The literal form is almost always preferred, but the constructed form offers, in some cases, more creation options.
 
-Many people mistakingly claim "everything in JavaScript is an object", but this is incorrect. Objects are one of the 6 (or 7, depending on your perspective) primitive types. Objects have sub-types, including `function`, and also can be behavior-specialized, like `[object Array]` as the internal label representing the array object sub-type.
+Many people mistakenly claim "everything in JavaScript is an object", but this is incorrect. Objects are one of the 6 (or 7, depending on your perspective) primitive types. Objects have sub-types, including `function`, and also can be behavior-specialized, like `[object Array]` as the internal label representing the array object sub-type.
 
 Objects are collections of key/value pairs. The values can be accessed as properties, via `.propName` or `["propName"]` syntax. Whenever a property is accessed, the engine actually invokes the internal default `[[Get]]` operation (and `[[Put]]` for setting values), which not only looks for the property directly on the object, but which will traverse the `[[Prototype]]` chain (see Chapter 5) if not found.
 

@@ -2,12 +2,14 @@
 
 ## Table of Contents
 
+* Foreword
 * Preface
 * Chapter 1: Types
 	* A Type By Any Other Name...
-	* Primitives
-	* Values As Types
+	* Built-in Types
+	* Values as Types
 * Chapter 2: Values
+	* Arrays
 	* Strings
 	* Numbers
 	* Special Values
@@ -16,7 +18,7 @@
 	* Internal `[[Class]]`
 	* Boxing Wrappers
 	* Unboxing
-	* Natives As Constructors
+	* Natives as Constructors
 * Chapter 4: Coercion
 	* Converting Values
 	* Abstract Value Operations
@@ -30,6 +32,8 @@
 	* Automatic Semicolons
 	* Errors
 	* Function Arguments
+	* `try..finally`
+	* `switch`
 * Appendix A: Mixed Environment JavaScript
-* Appendix B: Thank You's!
+* Appendix B: Acknowledgments
 
